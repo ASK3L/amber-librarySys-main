@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <h1><%= title %></h1>
+    <p>Welcome to <%= title %></p>
+    <h1>These are all the books we have available</h1>
+
+    <style>
+      .unavailable{
+        color: red;
+      }
+      .available{
+        color: green;
+      }
+      .hidden{
+        display:none;
+      }
+    </style>
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Book Name</th>
+          <th>Author</th>
+          <th>Description</th>
+          <th>status</th>
+          <th>Category</th>
+          <th>Make request</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% books.forEach((book)=>{ %>
+          <tr class="<%= (book.status == 'available') ? 'available' : 'unavailable'%>">
+            <td><%=book.id%></td>
+            <td><%=book.name%></td>
+            <td><%=book.author%></td>
+            <td><%=book.description%></td>
+            <td><%=book.status%></td>
+            <td><%=book.category%></td>
+            <td><a data-bookId="<%=book.id%>" onclick="showForm(this)">request book</a></td>
+          </tr>
+        <% })%>
+      </tbody>
+    </table>
+    <form class="bookForm hidden" method="POST">
+      <legend>Borrow a book</legend>
+      <label>
+        <span>Book Info</span>
+        <input type="text" name="book_id" id="idField">
+      </label>
+      <label>
+        <span>Student First Name</span>
+        <input type="text" name="fname">
+      </label>
+      <label>
+        <span>Student Last Name</span>
+        <input type="text" name="lname">
+      </label>
+      <label>
+        <span>Student Email</span>
+        <input type="email" name="email">
+      </label>
+      <button type="submit">Submit</button>
+
+    </form>
+
+    <script>
+      function showForm(requestBook){
+        let form = document.querySelector(".bookForm");
+        let idField = document.querySelector("#idField");
+        let bookId = requestBook.getAttribute("data-bookId");
+        idField.value = bookId;
+        form.classList.remove("hidden");
+        form.action = "/book/"+bookId;
+        console.log(form.action)
+        
+      }
+    </script>
+  </body>
+</html>
