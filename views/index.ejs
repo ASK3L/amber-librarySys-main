@@ -2,47 +2,68 @@
 <html>
   <head>
     <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel="stylesheet" href="/stylesheets/style.css" />
   </head>
   <body>
     <h1><%= title %></h1>
     <p>Welcome to <%= title %></p>
-    <h1>These are all the books we have available</h1>
+    <h1 class="title">These are all the books we have available</h1>
 
     <style>
-      .unavailable{
+      .unavailable {
         color: red;
       }
-      .available{
-        color: green;
+      .available {
+        color: rgb(167, 167, 167);
       }
-      .hidden{
-        display:none;
+      .hidden {
+        display: none;
+      }
+      .sub-titles {
+        color: rgb(136, 136, 136);
+      }
+      .title {
+        color: rgb(138, 0, 0);
+        margin-left: 0%;
+      }
+
+      .col-5 {
+        width: 40%;
       }
     </style>
-    <table>
+    <table style="table-layout: fixed">
       <thead>
-        <tr>
-          <th>ID</th>
-          <th>Book Name</th>
-          <th>Author</th>
-          <th>Description</th>
-          <th>status</th>
-          <th>Category</th>
-          <th>Make request</th>
+        <tr class="sub-titles">
+          <th class="col-1">IMAGE</th>
+          <th class="col-2">ID</th>
+          <th class="col-3">Book Name</th>
+          <th class="col-4">Author</th>
+          <th class="col-5">Description</th>
+          <th class="col-6">status</th>
+          <th class="col-7">Category</th>
+          <th class="col-8">Make request</th>
         </tr>
       </thead>
       <tbody>
         <% books.forEach((book)=>{ %>
-          <tr class="<%= (book.status == 'available') ? 'available' : 'unavailable'%>">
-            <td><%=book.id%></td>
-            <td><%=book.name%></td>
-            <td><%=book.author%></td>
-            <td><%=book.description%></td>
-            <td><%=book.status%></td>
-            <td><%=book.category%></td>
-            <td><a data-bookId="<%=book.id%>" onclick="showForm(this)">request book</a></td>
-          </tr>
+        <tr
+          class="<%= (book.status == 'available') ? 'available' : 'unavailable'%>"
+        >
+          <td>
+            <img src="/IMG/<%= book.name%>.jpg" alt="" />
+          </td>
+          <td class="col-1"><%=book.id%></td>
+          <td><%=book.name%></td>
+          <td><%=book.author%></td>
+          <td class="col-5"><%=book.description%></td>
+          <td><%=book.status%></td>
+          <td><%=book.category%></td>
+          <td>
+            <a data-bookId="<%=book.id%>" onclick="showForm(this)"
+              >request book</a
+            >
+          </td>
+        </tr>
         <% })%>
       </tbody>
     </table>
@@ -50,34 +71,32 @@
       <legend>Borrow a book</legend>
       <label>
         <span>Book Info</span>
-        <input type="text" name="book_id" id="idField">
+        <input type="text" name="book_id" id="idField" />
       </label>
       <label>
         <span>Student First Name</span>
-        <input type="text" name="fname">
+        <input type="text" name="fname" />
       </label>
       <label>
         <span>Student Last Name</span>
-        <input type="text" name="lname">
+        <input type="text" name="lname" />
       </label>
       <label>
         <span>Student Email</span>
-        <input type="email" name="email">
+        <input type="email" name="email" />
       </label>
       <button type="submit">Submit</button>
-
     </form>
 
     <script>
-      function showForm(requestBook){
+      function showForm(requestBook) {
         let form = document.querySelector(".bookForm");
         let idField = document.querySelector("#idField");
         let bookId = requestBook.getAttribute("data-bookId");
         idField.value = bookId;
         form.classList.remove("hidden");
-        form.action = "/book/"+bookId;
-        console.log(form.action)
-        
+        form.action = "/book/" + bookId;
+        console.log(form.action);
       }
     </script>
   </body>
